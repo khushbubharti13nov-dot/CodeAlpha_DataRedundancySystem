@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Data Redundancy Removal System — CodeAlpha</title>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+<div class="app">
+  <div class="header">
+    <div class="header-icon">&#128202;</div>
+    <div class="header-text">
+      <h1>Data Redundancy Removal System</h1>
+      <p>Validates, classifies and deduplicates records before cloud persistence</p>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats-bar">
+    <div class="stat-card blue"><div class="stat-label">Total Records</div><div class="stat-value" id="s-total">0</div></div>
+    <div class="stat-card green"><div class="stat-label">Verified Unique</div><div class="stat-value" id="s-unique">0</div></div>
+    <div class="stat-card amber"><div class="stat-label">Flagged (Fuzzy)</div><div class="stat-value" id="s-flagged">0</div></div>
+    <div class="stat-card red"><div class="stat-label">Blocked (Exact)</div><div class="stat-value" id="s-blocked">0</div></div>
+  </div>
+
+  <div class="panels">
+    <!-- Input Panel -->
+    <div class="panel">
+      <div class="panel-header">&#128221; New Record Input</div>
+      <div class="panel-body">
+        <div class="form-row">
+          <div class="form-group"><label>Full Name</label><input type="text" id="f-name" placeholder="e.g. Alice Sharma"></div>
+          <div class="form-group"><label>Email</label><input type="text" id="f-email" placeholder="e.g. alice@corp.com"></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Department</label>
+            <select id="f-dept">
+              <option value="">Select...</option>
+              <option>Engineering</option><option>Marketing</option>
+              <option>Finance</option><option>HR</option>
+              <option>Operations</option><option>Sales</option>
+            </select>
+          </div>
+          <div class="form-group"><label>Employee ID</label><input type="text" id="f-id" placeholder="e.g. EMP-042"></div>
+        </div>
+        <div class="threshold-row">
+          <span>Similarity Threshold:</span>
+          <input type="range" id="threshold" min="50" max="95" value="75" oninput="updateThreshold(this.value)">
+          <span class="threshold-val" id="thresh-label">75%</span>
+        </div>
+        <button class="btn-add" onclick="submitRecord()">&#9989; Validate &amp; Submit</button>
+      </div>
+    </div>
+
+    <!-- Validation Panel -->
+    <div class="panel">
+      <div class="panel-header">&#128737; Validation Pipeline</div>
+      <div class="panel-body">
+        <div class="validation-box" id="validation-area">
+          <div class="validation-idle">Fill in a record and submit to run validation checks</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Database Table -->
+  <div class="db-panel">
+    <div class="db-toolbar">
+      <div class="title">&#128202; Cloud Database</div>
+      <input class="search-input" type="text" id="search-box" placeholder="Search records..." oninput="renderTable()">
+      <button class="btn-purge" onclick="purgeAll()">&#128465; Purge Flagged</button>
+    </div>
+    <div style="overflow-x:auto">
+      <table class="db-table">
+        <thead>
+          <tr>
+            <th>ID</th><th>Name</th><th>Email</th><th>Dept</th><th>Status</th><th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="db-body"></tbody>
+      </table>
+      <div class="empty-db" id="empty-msg" style="display:none">No records yet. Submit a record above.</div>
+    </div>
+  </div>
+
+  <!-- Log -->
+  <div class="log-panel">
+    <div class="panel-header" style="padding:10px 14px;border-bottom:1px solid #e5e7eb">&#128203; Activity Log</div>
+    <div class="log-body" id="log-body">
+      <div class="log-entry info"><span class="log-time">now</span><span class="log-msg">System initialized. Waiting for records.</span></div>
+    </div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
